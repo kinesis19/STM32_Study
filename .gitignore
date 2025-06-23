@@ -1,0 +1,22 @@
+# Build artifacts
+build/
+Debug/
+Release/
+
+# STM32CubeIDE specific
+.project
+.cproject
+.settings/
+*.launch
+.mxproject
+
+# Executables
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+
+# Other
+*.bak
+*.swp
