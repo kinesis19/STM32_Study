@@ -91,6 +91,9 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -100,6 +103,25 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  // 1. 모터 1은 정방향, 모터 2는 역방향
+	  motor1_control(1800);
+	  motor2_control(-1800); // 약 50% 역방향 속도
+	  HAL_Delay(3000);
+
+	  // 2. 두 모터 모두 2초간 정지
+	  motor1_control(0);
+	  motor2_control(0);
+	  HAL_Delay(2000);
+
+	  // 3. 모터1은 역방향, 모터2는 정방향
+	  motor1_control(-1800); // 약 50% 역방향 속도
+	  motor2_control(1800);  // 최대 정방향 속도
+	  HAL_Delay(3000);
+
+	  // 4. 두 모터 모두 2초간 정지
+	  motor1_control(0);
+	  motor2_control(0);
+	  HAL_Delay(2000);
   }
   /* USER CODE END 3 */
 }
@@ -229,7 +251,37 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void motor1_control(int speed)
+{
+  if (speed >= 0)
+  {
+    // SET으로 설정
+    HAL_GPIO_WritePin(M1_DIR_GPIO_Port, M1_DIR_Pin, GPIO_PIN_SET);
+    // Duty Cycle 설정
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, speed);
+  } else {
+    // RESET으로 설정
+    HAL_GPIO_WritePin(M1_DIR_GPIO_Port, M1_DIR_Pin, GPIO_PIN_RESET);
+    // Duty Cycle 설정
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, -speed);
+  }
+}
 
+void motor2_control(int speed)
+{
+  if (speed >= 0)
+  {
+    // SET으로 설정
+    HAL_GPIO_WritePin(M2_DIR_GPIO_Port, M2_DIR_Pin, GPIO_PIN_SET);
+    // Duty Cycle 설정
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, speed);
+  } else  {
+    // RESET으로 설정
+    HAL_GPIO_WritePin(M2_DIR_GPIO_Port, M2_DIR_Pin, GPIO_PIN_RESET);
+    // Duty Cycle 설정
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, -speed);
+  }
+}
 /* USER CODE END 4 */
 
 /**
