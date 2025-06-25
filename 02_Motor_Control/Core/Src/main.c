@@ -43,6 +43,7 @@
 TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
+int16_t mode = 0;
 
 /* USER CODE END PV */
 
@@ -73,7 +74,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+   HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -92,7 +93,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-//  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
 
   /* USER CODE END 2 */
 
@@ -103,25 +104,23 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  // 1. 모터 1은 정방향, 모터 2는 역방향
-	  motor1_control(1800);
-//	  motor2_control(-1800); // 약 50% 역방향 속도
-	  HAL_Delay(3000);
 
-	  // 2. 두 모터 모두 2초간 정지
-	  motor1_control(0);
-//	  motor2_control(0);
-	  HAL_Delay(2000);
-
-	  // 3. 모터1은 역방향, 모터2는 정방향
-	  motor1_control(-1800); // 약 50% 역방향 속도
-//	  motor2_control(1800);  // 최대 정방향 속도
-	  HAL_Delay(3000);
-
-	  // 4. 두 모터 모두 2초간 정지
-	  motor1_control(0);
-//	  motor2_control(0);
-	  HAL_Delay(2000);
+	  if (mode == 0) { // 0. 중지
+		  motor1_control(0);
+		  motor2_control(0);
+	  } else if (mode == 1) { // 1. 정주행
+		  motor1_control(1800);
+		  motor2_control(1800);
+	  } else if (mode == 2) { // 2. 역주행
+		  motor1_control(-1800);
+		  motor2_control(-1800);
+	  } else if (mode == 3) { // 3. 우회전
+		  motor1_control(-1800);
+		  motor2_control(1800);
+	  } else if (mode == 4) { // 4. 좌회전
+		  motor1_control(1800);
+		  motor2_control(-1800);
+	  }
   }
   /* USER CODE END 3 */
 }
