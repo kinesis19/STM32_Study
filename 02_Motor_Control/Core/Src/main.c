@@ -105,22 +105,22 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  // 1. 모터 1은 정방향, 모터 2는 역방향
 	  motor1_control(1800);
-	  motor2_control(-1800); // 약 50% 역방향 속도
+//	  motor2_control(-1800); // 약 50% 역방향 속도
 	  HAL_Delay(3000);
 
 	  // 2. 두 모터 모두 2초간 정지
 	  motor1_control(0);
-	  motor2_control(0);
+//	  motor2_control(0);
 	  HAL_Delay(2000);
 
 	  // 3. 모터1은 역방향, 모터2는 정방향
 	  motor1_control(-1800); // 약 50% 역방향 속도
-	  motor2_control(1800);  // 최대 정방향 속도
+//	  motor2_control(1800);  // 최대 정방향 속도
 	  HAL_Delay(3000);
 
 	  // 4. 두 모터 모두 2초간 정지
 	  motor1_control(0);
-	  motor2_control(0);
+//	  motor2_control(0);
 	  HAL_Delay(2000);
   }
   /* USER CODE END 3 */
@@ -184,9 +184,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 72-1;
+  htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 1000-1;
+  htim2.Init.Period = 3600-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
