@@ -257,12 +257,14 @@ void motor1_control(int speed)
     // SET으로 설정
     HAL_GPIO_WritePin(M1_DIR_GPIO_Port, M1_DIR_Pin, GPIO_PIN_SET);
     // Duty Cycle 설정
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, speed);
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, speed); // 1. HAL 라이브러리로 구현
+    TIM2->CCR1 = speed; // 2. 레지스터 참조로 구현
   } else {
     // RESET으로 설정
     HAL_GPIO_WritePin(M1_DIR_GPIO_Port, M1_DIR_Pin, GPIO_PIN_RESET);
     // Duty Cycle 설정
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, -speed);
+//    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, -speed);
+    TIM2->CCR1 = -speed; // 2. 레지스터 참조로 구현
   }
 }
 
@@ -273,12 +275,14 @@ void motor2_control(int speed)
     // SET으로 설정
     HAL_GPIO_WritePin(M2_DIR_GPIO_Port, M2_DIR_Pin, GPIO_PIN_SET);
     // Duty Cycle 설정
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, speed);
+//    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, speed);
+    TIM2->CCR2 = speed; // 2. 레지스터 참조로 구현
   } else  {
     // RESET으로 설정
     HAL_GPIO_WritePin(M2_DIR_GPIO_Port, M2_DIR_Pin, GPIO_PIN_RESET);
     // Duty Cycle 설정
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, -speed);
+//    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, -speed);
+    TIM2->CCR2 = -speed; // 2. 레지스터 참조로 구현
   }
 }
 /* USER CODE END 4 */
